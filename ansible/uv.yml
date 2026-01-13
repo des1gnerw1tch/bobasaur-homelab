@@ -1,0 +1,28 @@
+---
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'UV: prepare install directory'
+      file:
+        path: /opt/uv
+        recurse: yes
+        state: directory
+
+    - name: 'Download UV installer'
+      get_url:
+        url: https://astral.sh/uv/install.sh
+        dest: /opt/uv/install.sh
+
+    - name: Make install script executable
+      ansible.builtin.file:
+        path: /opt/uv/install.sh
+        mode: '0755'
+
+    - name: 'Run install script'
+      ansible.builtin.command: /opt/uv/install.sh
+      environment:
+        UV_INSTALL_DIR: /usr/local/bin
+
+    - name: 'Verify UV works'
+      ansible.builtin.command: /usr/local/bin/uv --version 
+
