@@ -10,4 +10,10 @@ consul:
 nomad:
 	ansible-playbook -i hosts ./nomad.yml --ask-become-pass
 
-ALL: docker cni consul nomad
+uv:
+	ansible-playbook -i hosts ./uv.yml --ask-become-pass
+
+bluez:
+	ansible-playbook -i hosts ./bluez.yml --ask-become-pass
+
+ALL: docker cni consul nomad uv bluez

@@ -1,0 +1,11 @@
+---
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Update apt packages and install BlueZ'
+      apt:
+        pkg:
+          - bluez
+        state: present
+        update_cache: true
+
