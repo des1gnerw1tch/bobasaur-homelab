@@ -1,0 +1,32 @@
+---
+# To get this to work, need to set $TAILSCALE_AUTH_KEY in the environment where you run the playbook to an auth key that is created with write permissions.
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Prepare install directory for tailscale'
+      file:
+        path: /opt/tailscale
+        recurse: yes
+        state: directory
+
+    - name: 'Download tailscale installer'
+      get_url:
+        url: https://tailscale.com/install.sh
+        dest: /opt/tailscale/install.sh
+
+    - name: Make install script executable
+      ansible.builtin.file:
+        path: /opt/tailscale/install.sh
+        mode: '0755'
+
+    - name: 'Run install script'
+      ansible.builtin.command: /opt/tailscale/install.sh
+
+    - name: 'Run tailscale up from auth key in local env (env thats running the playbook)'
+      ansible.builtin.shell: sudo tailscale up --authkey $TAILSCALE_AUTH_KEY --advertise-tags=tag:servers
+      environment:
+        TAILSCALE_AUTH_KEY: "{{ lookup('env', 'TAILSCALE_AUTH_KEY') }}"
+
+    # - name: 'Verify UV works'
+    #   ansible.builtin.command: /usr/local/bin/uv --version 
+
