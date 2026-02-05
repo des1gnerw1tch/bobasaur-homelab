@@ -34,7 +34,7 @@ job "hue-lights" {
             driver = "raw_exec"
             config {
                 command = "/bin/bash"
-                args = ["-c", "whoami; echo 'Hello from nomad!'; cd /home/dino/hue-lights; git clone https://github.com/des1gnerw1tch/hue-lights-dash-controller.git; uv sync; uv run main.py"]
+                args = ["-c", "whoami; echo 'Hello from nomad!'; cd /home/dino/hue-lights; rm -rf hue-lights-dash-controller; git clone https://github.com/des1gnerw1tch/hue-lights-dash-controller.git; cd hue-lights-dash-controller; git pull; uv sync; uv run main.py"]
             }
             env {
                 HUE_BULB_MAC = "D5:3E:9F:CA:E5:77"
@@ -48,3 +48,4 @@ job "hue-lights" {
         }
     }
 }
+
