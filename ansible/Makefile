@@ -16,4 +16,10 @@ uv:
 bluez:
 	ansible-playbook -i hosts ./bluez.yml --ask-become-pass
 
-ALL: docker cni consul nomad uv bluez
+tailscale:
+	ansible-playbook -i hosts ./tailscale.yml --ask-become-pass
+
+uv:
+	ansible-playbook -i hosts ./uv.yml --ask-become-pass
+
+ALL: docker cni consul nomad uv bluez tailscale
