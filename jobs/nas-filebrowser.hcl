@@ -34,7 +34,7 @@ job "nas-filebrowser" {
             driver = "raw_exec"
             config {
                 command = "/bin/bash"
-                args = ["-c", "echo 'hello from nomad'; whoami; sudo mount /dev/sda1 /mnt/myssd/; sudo docker run --rm --user root -v /mnt/myssd:/srv -p 8080:80 filebrowser/filebrowser"]
+                args = ["-c", "echo 'hello from nomad'; whoami; sudo mount /dev/sda1 /mnt/myssd/; sudo docker run --rm --user root -v /mnt/myssd:/srv -p 8080:80 filebrowser/filebrowser:v2.62.0"]
             }
             env {
             }
