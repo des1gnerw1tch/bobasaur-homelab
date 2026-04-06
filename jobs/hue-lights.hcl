@@ -30,6 +30,7 @@ job "hue-lights" {
                 timeout = "2s"
             }
         }
+	# TODO: Make this a Dockerfile
         task "run-app" {
             driver = "raw_exec"
             config {

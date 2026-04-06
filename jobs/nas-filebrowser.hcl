@@ -6,7 +6,7 @@ job "nas-filebrowser" {
         attribute = "${attr.unique.hostname}"
         value     = "raspberrypi4dot2"
     }
-    group "dash-app" {
+    group "app" {
         count=1
         network {
             # This requests a dynamic port named "http". This will
@@ -30,6 +30,7 @@ job "nas-filebrowser" {
                 timeout = "2s"
             }
         }
+	# TODO: make driver docker
         task "run-app" {
             driver = "raw_exec"
             config {
