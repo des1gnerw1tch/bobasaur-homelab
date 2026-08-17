@@ -1,0 +1,26 @@
+---
+# Destructive: stops nomad, wipes /opt/nomad/data (server raft state and
+# client allocation state) on every node, then restarts nomad so the
+# cluster re-bootstraps from scratch.
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Nomad: stop nomad service'
+      systemd:
+        name: nomad
+        state: stopped
+
+    - name: 'Nomad: wipe data_dir'
+      file:
+        path: /opt/nomad/data
+        state: absent
+
+    - name: 'Nomad: recreate data_dir'
+      file:
+        path: /opt/nomad/data
+        state: directory
+
+    - name: 'Nomad: start nomad service'
+      systemd:
+        name: nomad
+        state: started
