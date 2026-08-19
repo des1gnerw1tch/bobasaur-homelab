@@ -1,7 +1,7 @@
 # Define the Consul datacenter where our nodes are running
 datacenter = "bobasaur-homelab"
 data_dir  = "/opt/nomad/data"
-bind_addr = "0.0.0.0"
+bind_addr = "{{ GetInterfaceIP \"tailscale0\" }}"
 
 # server is a Nomad API server
 server {

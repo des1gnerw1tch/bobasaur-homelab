@@ -1,0 +1,8 @@
+---
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Nomad: restart Nomad'
+      systemd:
+        name: nomad
+        state: restarted

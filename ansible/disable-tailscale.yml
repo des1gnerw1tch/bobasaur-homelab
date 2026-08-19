@@ -1,0 +1,9 @@
+---
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Tailscale: stop and disable tailscaled service'
+      systemd:
+        name: tailscaled
+        state: stopped
+        enabled: no

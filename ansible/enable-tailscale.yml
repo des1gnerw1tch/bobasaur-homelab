@@ -1,0 +1,9 @@
+---
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Tailscale: enable and start tailscaled service'
+      systemd:
+        name: tailscaled
+        state: started
+        enabled: yes

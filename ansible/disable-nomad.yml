@@ -1,0 +1,9 @@
+---
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Nomad: stop and disable nomad service'
+      systemd:
+        name: nomad
+        state: stopped
+        enabled: no

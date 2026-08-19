@@ -1,0 +1,9 @@
+---
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Nomad: enable and start nomad service'
+      systemd:
+        name: nomad
+        state: started
+        enabled: yes

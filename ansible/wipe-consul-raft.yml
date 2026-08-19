@@ -1,0 +1,26 @@
+---
+# Destructive: stops consul, wipes /opt/consul/data/raft (raft log/snapshots)
+# on every node, then restarts consul so the cluster re-bootstraps from
+# scratch.
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Consul: stop consul service'
+      systemd:
+        name: consul
+        state: stopped
+
+    - name: 'Consul: wipe raft dir'
+      file:
+        path: /opt/consul/data/raft
+        state: absent
+
+#    - name: 'Consul: recreate raft dir'
+#      file:
+#        path: /opt/consul/data/raft
+#        state: directory
+
+    - name: 'Consul: start consul service'
+      systemd:
+        name: consul
+        state: started

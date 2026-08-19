@@ -1,0 +1,8 @@
+---
+- hosts: bobasaur-homelab
+  become: yes
+  tasks:
+    - name: 'Consul: restart consul'
+      systemd:
+        name: consul
+        state: restarted
