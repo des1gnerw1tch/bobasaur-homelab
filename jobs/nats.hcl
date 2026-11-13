@@ -18,6 +18,12 @@ job "nats" {
                 # Port inside the container that host traffic is forwarded to
                 to     = 8222
             }
+            port "mqtt" {
+                # Port on the host that MQTT clients connect to
+                static = 1883
+                # Port inside the container that host traffic is forwarded to
+                to     = 1883
+            }
             # I was having the issue where without mode "bridge", it was only mapping host ports on the wlan0 
             # interface to docker container ports,  not 0.0.0.0 like a normal docker run -p ...
             # Source to this same issue https://github.com/hashicorp/nomad/issues/12106#issuecomment-1126907699,
@@ -38,10 +44,33 @@ job "nats" {
         }
         task "run-nats" {
             driver = "docker"
+            # Renders the NATS config into the task's local/ dir, which the docker driver mounts at /local
+            # https://developer.hashicorp.com/nomad/docs/job-specification/template
+            template {
+                destination = "local/nats.conf"
+                # Restart NATS when the config changes
+                change_mode = "restart"
+                data        = <<EOF
+# MQTT requires JetStream and an explicit server_name
+server_name: "bobasaur-nats"
+
+port: 4222
+http_port: 8222
+
+jetstream {
+  # Note: this is inside the container, so JetStream/MQTT state is lost on restart
+  store_dir: "/data/jetstream"
+}
+
+mqtt {
+  port: 1883
+}
+EOF
+            }
             config {
                 image = "nats:latest"
-                ports = ["client", "monitor"]
-                args  = ["--http_port", "8222", "-js"]
+                ports = ["client", "monitor", "mqtt"]
+                args  = ["-c", "/local/nats.conf"]
             }
             resources {
                 cpu    = 500 # MHz
